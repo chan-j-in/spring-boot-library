@@ -6,5 +6,11 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface MemberMapper {
-        public MemberVO read(String email);
+        public MemberVO readByEmail(String email);
+
+        public MemberVO readByNickname(String nickname);
+
+        public int insert(MemberVO member);
+
+        public int update(MemberVO member);
 }

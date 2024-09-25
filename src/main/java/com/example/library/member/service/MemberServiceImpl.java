@@ -19,7 +19,7 @@ public class MemberServiceImpl implements MemberService {
         log.info("========== member login service");
         log.info("Email: {}", email);
         log.info("Password: {}", password == null ? "null" : password);
-        MemberVO readMember = mapper.read(email);
+        MemberVO readMember = mapper.readByEmail(email);
         if (readMember != null) {
             if (readMember.getPassword().equals(password)) {
                 return readMember;
@@ -29,14 +29,32 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberVO get(String param) {
+    public MemberVO get(String param, boolean isEmail) {
 
         log.info("========== member get service");
-
-        MemberVO readMember = mapper.read(param);
-        if (readMember!=null) {
-            return readMember;
+        MemberVO readMember;
+        if (isEmail) {
+            readMember = mapper.readByEmail(param);
+        } else {
+            readMember = mapper.readByNickname(param);
         }
-        return null;
+        log.info("Read Member: {}", readMember);
+        return readMember;
+    }
+
+    @Override
+    public boolean join(MemberVO member) {
+
+        log.info("========== member join service");
+        boolean joinResult = mapper.insert(member) == 1;
+        return joinResult;
+    }
+
+    @Override
+    public boolean modify(MemberVO member) {
+
+        log.info("========== member modify service");
+        boolean updateResult = mapper.update(member) == 1;
+        return updateResult;
     }
 }
